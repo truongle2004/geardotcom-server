@@ -1,0 +1,120 @@
+package web_ecommerce.sale_service.controller;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import web_ecommerce.core.controller.BaseController;
+import web_ecommerce.core.dto.response.Response;
+import web_ecommerce.sale_service.dto.CategoryDTO;
+import web_ecommerce.sale_service.dto.ProductDTO;
+import web_ecommerce.sale_service.service.CartService;
+import web_ecommerce.sale_service.service.ProductService;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+@RestController
+public class ProductController extends BaseController {
+    private static final String root = "/sale/products";
+    private ProductService productService;
+
+    public ProductController(ProductService productService, CartService cartService) {
+        this.productService = productService;
+    }
+
+
+//    @ApiOperation(value = "API get list product by category")
+//    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+//            @ApiResponse(code = 400, message = "Bad request"),
+//            @ApiResponse(code = 500, message = "Internal server error")}
+//    )
+//    @GetMapping(value = V1 + root + "/category")
+//    public Response<Page<ProductDTO>> getListProductByCategory(
+//            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable,
+//            @RequestParam(defaultValue = "") String category
+//    ) {
+//        return productService.getListProductByCategory(pageable, category);
+//    }
+
+    @ApiOperation(value = "API get list product")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @GetMapping(value = V1 + root)
+    public Response<Page<ProductDTO>> getListProduct(
+            Pageable pageable,
+            @RequestParam(defaultValue = "all") String category
+    ) {
+        return productService.getListProductByCategory(pageable, category);
+    }
+
+    @ApiOperation(value = "API get product detail")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @GetMapping(value = V1 + root + "/{id}")
+    public Response<ProductDTO> getProductDetail(
+            @PathVariable(value = "id") String id
+    ) {
+        return productService.getById(id);
+    }
+
+    @ApiOperation(value = "API get list category")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @GetMapping(value = V1 + root + "/categories")
+    public Response<List<CategoryDTO>> getListCategory() {
+        return productService.getAllProductCategory();
+    }
+
+    @ApiOperation(value = "API get image")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @GetMapping(value = V1 + root + "/images/{filename:.+}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+        try {
+            Path imagePath = Paths.get("/home/lesytruong/projects/images").resolve(filename).normalize();
+            Resource resource = new UrlResource(imagePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            String contentType = Files.probeContentType(imagePath);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+        } catch (IOException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @GetMapping(value = V1 + root + "/test")
+    public Response<String> test() {
+        return new Response<String>().withDataAndStatus("truong dep trai", HttpStatus.OK);
+    }
+}
