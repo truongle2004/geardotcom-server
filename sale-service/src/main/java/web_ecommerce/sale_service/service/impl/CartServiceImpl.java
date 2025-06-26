@@ -17,11 +17,13 @@ import web_ecommerce.sale_service.repository.CartRepository;
 import web_ecommerce.sale_service.service.CartService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
-    private CartRepository cartRepository;
-    private CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Value("${file_upload-url}")
     private String FILE_UPLOAD_URL;
@@ -57,6 +59,11 @@ public class CartServiceImpl implements CartService {
 
         String cartId = cartRepository.getByUserId(userId);
 
+        CartItem isExist = cartItemRepository.findByCartIdAndProductId(cartId, newItem.getProductId());
+        if(isExist != null) {
+            return new Response<String>().withDataAndStatus(ResponseMessage.CART_ITEM_ALREADY_EXISTS.getMessage(), HttpStatus.CONFLICT);
+        }
+
         if (StringUtils.isNotNullOrEmpty(cartId)) {
             Cart cart = new Cart();
             cart.setUserId(userId);
@@ -70,7 +77,7 @@ public class CartServiceImpl implements CartService {
         } else {
             List<CartItem> cartItems = cartItemRepository.getAllByCartId(cartId);
             for (CartItem cartItem : cartItems) {
-                if (cartItem.getProductId() == newItem.getProductId()) {
+                if (Objects.equals(cartItem.getProductId(), newItem.getProductId())) {
                     return new Response<String>().withDataAndStatus(ResponseMessage.CART_ITEM_ALREADY_EXISTS.getMessage(), HttpStatus.CONFLICT);
                 }
             }

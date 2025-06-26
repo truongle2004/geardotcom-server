@@ -11,6 +11,7 @@ import web_ecommerce.core.enums.ImageEnum;
 import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
 import web_ecommerce.sale_service.dto.ProductImageDTO;
+import web_ecommerce.sale_service.dto.VendorDTO;
 import web_ecommerce.sale_service.enitty.Product;
 import web_ecommerce.sale_service.repository.ProductImageRepository;
 import web_ecommerce.sale_service.repository.ProductRepository;
@@ -22,8 +23,8 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository productRepository;
-    private ProductImageRepository productImageRepository;
+    private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
 
     @Value("${file_upload-url}")
     private String FILE_UPLOAD_URL;
@@ -35,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category) {
-        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue());
+        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue(), category);
         productDTOS.forEach(productDTO -> {
             productDTO.setImages(productImageRepository.getByProductId(productDTO.getId(), FILE_UPLOAD_URL));
         });
@@ -45,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Response<ProductDTO> getById(String productId) {
         Optional<Product> product = productRepository.findById(productId);
-        if (!product.isPresent()) {
+        if (product.isEmpty()) {
             return new Response<ProductDTO>().withDataAndStatus(null, HttpStatus.NOT_FOUND);
         }
 
@@ -76,5 +77,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Response<List<CategoryDTO>> getAllProductCategory() {
         return new Response<List<CategoryDTO>>().withDataAndStatus(productRepository.getAllProductCategory(), HttpStatus.OK);
+    }
+
+    @Override
+    public Response<List<VendorDTO>> getAllVendor() {
+        return new Response<List<VendorDTO>>().withDataAndStatus(productRepository.getAll(), HttpStatus.OK);
     }
 }

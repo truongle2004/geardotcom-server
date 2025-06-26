@@ -18,6 +18,7 @@ import web_ecommerce.core.controller.BaseController;
 import web_ecommerce.core.dto.response.Response;
 import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
+import web_ecommerce.sale_service.dto.VendorDTO;
 import web_ecommerce.sale_service.service.CartService;
 import web_ecommerce.sale_service.service.ProductService;
 
@@ -30,25 +31,11 @@ import java.util.List;
 @RestController
 public class ProductController extends BaseController {
     private static final String root = "/sale/products";
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductController(ProductService productService, CartService cartService) {
         this.productService = productService;
     }
-
-
-//    @ApiOperation(value = "API get list product by category")
-//    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
-//            @ApiResponse(code = 400, message = "Bad request"),
-//            @ApiResponse(code = 500, message = "Internal server error")}
-//    )
-//    @GetMapping(value = V1 + root + "/category")
-//    public Response<Page<ProductDTO>> getListProductByCategory(
-//            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable,
-//            @RequestParam(defaultValue = "") String category
-//    ) {
-//        return productService.getListProductByCategory(pageable, category);
-//    }
 
     @ApiOperation(value = "API get list product")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
@@ -58,7 +45,7 @@ public class ProductController extends BaseController {
     @GetMapping(value = V1 + root)
     public Response<Page<ProductDTO>> getListProduct(
             Pageable pageable,
-            @RequestParam(defaultValue = "all") String category
+            @RequestParam String category
     ) {
         return productService.getListProductByCategory(pageable, category);
     }
@@ -112,9 +99,13 @@ public class ProductController extends BaseController {
         }
     }
 
-
-    @GetMapping(value = V1 + root + "/test")
-    public Response<String> test() {
-        return new Response<String>().withDataAndStatus("truong dep trai", HttpStatus.OK);
+    @ApiOperation(value = "API get vendor")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @GetMapping(value = V1 + root + "/vendors")
+    public Response<List<VendorDTO>> getVendor() {
+        return productService.getAllVendor();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import web_ecommerce.core.dto.response.Response;
 import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
+import web_ecommerce.sale_service.dto.VendorDTO;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface ProductService {
     Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category);
     Response<ProductDTO> getById(String id);
     Response<List<CategoryDTO>> getAllProductCategory();
+    Response<List<VendorDTO>> getAllVendor();
  }

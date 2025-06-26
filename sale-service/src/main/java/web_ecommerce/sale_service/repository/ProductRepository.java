@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
+import web_ecommerce.sale_service.dto.VendorDTO;
 import web_ecommerce.sale_service.enitty.Product;
 
 import java.util.List;
@@ -33,8 +34,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "p.averageRating, p.reviewCount, p.tags, p.soleQuantity," +
             "p.notAllowPromotion, p.available, pi.src, pi.alt, p.price) from Product p " +
             "join ProductImage pi on p.id = pi.productId " +
-            "where pi.position = :position ")
-    Page<ProductDTO> getListProduct(Pageable pageable, @Param("position") int position);
+            "join ProductCategory pc on p.productCategoryId = pc.id " +
+            "where pi.position = :position " +
+            "AND (:category = 'all' OR :category = '' OR pc.handle = :category)")
+    Page<ProductDTO> getListProduct(Pageable pageable, int position, String category);
 
     @Query("select new web_ecommerce.sale_service.dto.CategoryDTO(pc.id, pc.name, pc.handle, pc.description) from ProductCategory pc")
     List<CategoryDTO> getAllProductCategory();
@@ -50,5 +53,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<ProductDTO> getProductsByIds(@Param("ids") List<String> ids,
                                       @Param("position") int position,
                                       @Param("file_upload_url") String url);
+
+
+    @Query("select new web_ecommerce.sale_service.dto.VendorDTO(pv.id, pv.name, pv.handle, pv.description) " +
+            "from ProductVendor pv")
+    List<VendorDTO> getAll();
 
 }

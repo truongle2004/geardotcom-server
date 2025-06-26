@@ -19,8 +19,8 @@ public class ProductDTO {
     public String description;
     public String title;
     public String warehouseId;
-    public Long productVendorId;
-    public Long productCategoryId;
+    public String productVendorId;
+    public String productCategoryId;
     public String publishedScope;
     public Integer purchaseCount;
     public BigDecimal averageRating;
@@ -36,7 +36,7 @@ public class ProductDTO {
 
 
     public ProductDTO(String id, String handle,String title, String warehouseId,
-                      Long productVendorId, Long productCategoryId, String publishedScope,
+                      String productVendorId, String productCategoryId, String publishedScope,
                       Integer purchaseCount, BigDecimal averageRating,
                       Integer reviewCount, String tags, Integer soleQuantity,
                       Boolean notAllowPromotion, Boolean available,String image, String alt, BigDecimal price) {
