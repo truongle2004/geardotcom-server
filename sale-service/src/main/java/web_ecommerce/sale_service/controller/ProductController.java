@@ -44,9 +44,10 @@ public class ProductController extends BaseController {
     @GetMapping(value = V1 + root)
     public Response<Page<ProductDTO>> getListProduct(
             Pageable pageable,
-            @RequestParam String category
+            @RequestParam(defaultValue = "all") String category,
+            @RequestParam(defaultValue = "") String vendor
     ) {
-        return productService.getListProductByCategory(pageable, category);
+        return productService.getListProductByCategory(pageable, category, vendor);
     }
 
     @ApiOperation(value = "API get product detail")

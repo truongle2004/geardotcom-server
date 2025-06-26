@@ -34,10 +34,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "p.averageRating, p.reviewCount, p.tags, p.soleQuantity," +
             "p.notAllowPromotion, p.available, pi.src, pi.alt, p.price) from Product p " +
             "join ProductImage pi on p.id = pi.productId " +
-            "join ProductCategory pc on p.productCategoryId = pc.id " +
-            "where pi.position = :position " +
-            "AND (:category = 'all' OR :category = '' OR pc.handle = :category)")
-    Page<ProductDTO> getListProduct(Pageable pageable, int position, String category);
+            "join ProductCategory pc on p.productCategoryId = pc.id " + "join ProductVendor pv on p.productVendorId = pv.id " +
+            "where pi.position = :position " + "AND (:category = 'all' OR :category = '' OR pc.handle = :category) " + "AND (:vendor = '' or pv.handle = :vendor) ")
+    Page<ProductDTO> getListProduct(Pageable pageable, int position, String category, String vendor);
 
     @Query("select new web_ecommerce.sale_service.dto.CategoryDTO(pc.id, pc.name, pc.handle, pc.description) from ProductCategory pc")
     List<CategoryDTO> getAllProductCategory();

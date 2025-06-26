@@ -35,8 +35,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category) {
-        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue(), category);
+    public Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category, String vendor) {
+        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue(), category, vendor);
         productDTOS.forEach(productDTO -> {
             productDTO.setImages(productImageRepository.getByProductId(productDTO.getId(), FILE_UPLOAD_URL));
         });
