@@ -1,16 +1,16 @@
 package web_ecommerce.sale_service.enitty;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import web_ecommerce.core.db.BaseEntityNonId;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "product_vendors")
 public class ProductVendor extends BaseEntityNonId {
     @Id
@@ -27,6 +27,9 @@ public class ProductVendor extends BaseEntityNonId {
 
     @Column(name = "handle")
     private String handle;
+
+    @Column(name = "product_category_id")
+    private String product_category_id;
 
     @Column(name = "description")
     private String description;
