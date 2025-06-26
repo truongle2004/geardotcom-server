@@ -19,7 +19,6 @@ import web_ecommerce.core.dto.response.Response;
 import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
 import web_ecommerce.sale_service.dto.VendorDTO;
-import web_ecommerce.sale_service.service.CartService;
 import web_ecommerce.sale_service.service.ProductService;
 
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class ProductController extends BaseController {
     private static final String root = "/sale/products";
     private final ProductService productService;
 
-    public ProductController(ProductService productService, CartService cartService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
