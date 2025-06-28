@@ -22,6 +22,7 @@ import web_ecommerce.sale_service.dto.VendorDTO;
 import web_ecommerce.sale_service.service.ProductService;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,9 +46,11 @@ public class ProductController extends BaseController {
     public Response<Page<ProductDTO>> getListProduct(
             Pageable pageable,
             @RequestParam(defaultValue = "all") String category,
-            @RequestParam(defaultValue = "") String vendor
+            @RequestParam(defaultValue = "") String vendor,
+            @RequestParam(required = false) BigDecimal min,
+            @RequestParam(required = false) BigDecimal max
     ) {
-        return productService.getListProductByCategory(pageable, category, vendor);
+        return productService.getListProductByCategory(pageable, category, vendor, min, max);
     }
 
     @ApiOperation(value = "API get product detail")

@@ -11,6 +11,7 @@ import web_ecommerce.sale_service.dto.ProductDTO;
 import web_ecommerce.sale_service.dto.VendorDTO;
 import web_ecommerce.sale_service.enitty.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -35,8 +36,11 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "p.notAllowPromotion, p.available, pi.src, pi.alt, p.price) from Product p " +
             "join ProductImage pi on p.id = pi.productId " +
             "join ProductCategory pc on p.productCategoryId = pc.id " + "join ProductVendor pv on p.productVendorId = pv.id " +
-            "where pi.position = :position " + "AND (:category = 'all' OR :category = '' OR pc.handle = :category) " + "AND (:vendor = '' or pv.handle = :vendor) ")
-    Page<ProductDTO> getListProduct(Pageable pageable, int position, String category, String vendor);
+            "where pi.position = :position " + "AND (:category = 'all' OR :category = '' OR pc.handle = :category) " +
+            "AND (:vendor = '' or pv.handle = :vendor) " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    Page<ProductDTO> getListProduct(Pageable pageable, int position, String category, String vendor, BigDecimal minPrice, BigDecimal maxPrice);
 
     @Query("select new web_ecommerce.sale_service.dto.CategoryDTO(pc.id, pc.name, pc.handle, pc.description) from ProductCategory pc")
     List<CategoryDTO> getAllProductCategory();

@@ -9,11 +9,12 @@ import web_ecommerce.sale_service.dto.CategoryDTO;
 import web_ecommerce.sale_service.dto.ProductDTO;
 import web_ecommerce.sale_service.dto.VendorDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
 
-    Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category, String vendor);
+    Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category, String vendor, BigDecimal minPrice, BigDecimal maxPrice);
     Response<ProductDTO> getById(String id);
     Response<List<CategoryDTO>> getAllProductCategory();
     Response<List<VendorDTO>> getAllVendor();
