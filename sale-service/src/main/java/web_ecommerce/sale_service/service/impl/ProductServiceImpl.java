@@ -17,6 +17,7 @@ import web_ecommerce.sale_service.repository.ProductImageRepository;
 import web_ecommerce.sale_service.repository.ProductRepository;
 import web_ecommerce.sale_service.service.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category, String vendor) {
-        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue(), category, vendor);
+    public Response<Page<ProductDTO>> getListProductByCategory(Pageable pageable, String category, String vendor, BigDecimal minPrice, BigDecimal maxPrice) {
+        Page<ProductDTO> productDTOS = productRepository.getListProduct(pageable, ImageEnum.MAIN_IMAGE.getValue(), category, vendor, minPrice, maxPrice);
         productDTOS.forEach(productDTO -> {
             productDTO.setImages(productImageRepository.getByProductId(productDTO.getId(), FILE_UPLOAD_URL));
         });
