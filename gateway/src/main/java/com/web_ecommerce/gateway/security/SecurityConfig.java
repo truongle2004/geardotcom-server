@@ -55,6 +55,13 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/v1/sale/products/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/v1/sale/carts/**").hasAuthority(ROLE_USER)
                         .pathMatchers(HttpMethod.GET, "/api/v1/sale/carts/**").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.GET, "/api/v1/user/districts").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.GET, "/api/v1/user/wards").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.GET, "/api/v1/user/provinces").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.GET, "/api/v1/user/profile").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.PUT, "/api/v1/user/profile").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.GET, "/api/v1/user/address").hasAuthority(ROLE_USER)
+                        .pathMatchers(HttpMethod.PUT, "/api/v1/user/address").hasAuthority(ROLE_USER)
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
