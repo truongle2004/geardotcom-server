@@ -1,11 +1,14 @@
 package web_ecommerce.user_service.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import web_ecommerce.core.dto.response.Response;
 import web_ecommerce.core.enums.ResponseMessage;
 import web_ecommerce.user_service.dtos.UserAddressDto;
+import web_ecommerce.user_service.dtos.UserAddressResponseDto;
 import web_ecommerce.user_service.dtos.UserProfileDto;
 import web_ecommerce.user_service.entities.UserAddress;
 import web_ecommerce.user_service.entities.UserProfile;
@@ -36,55 +39,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response<UserAddressDto> getAddressInfo(String userId) {
-        return new Response<UserAddressDto>().withDataAndStatus(userAddressRepository.getByUserId(userId), HttpStatus.OK);
+    public Response<Page<UserAddressResponseDto>> getAddressInfo(String userId, Pageable pageable) {
+        return new Response<Page<UserAddressResponseDto>>().withDataAndStatus(userAddressRepository.getByUserId(userId, pageable), HttpStatus.OK);
     }
 
     @Override
     public Response<String> updateAddress(UserAddressDto userAddressDto, String userId) {
-        UserAddress userAddress = userAddressRepository.getUserAddressByUserId(userId);
-        if (userAddress != null) {
-            if (userAddressDto.getProvinceCode() != null &&
-                    !userAddressDto.getProvinceCode().equals(userAddress.getProvinceCode())) {
-                userAddress.setProvinceCode(userAddressDto.getProvinceCode());
-            }
-
-            if (userAddressDto.getDistrictCode() != null &&
-                    !userAddressDto.getDistrictCode().equals(userAddress.getDistrictCode())) {
-                userAddress.setDistrictCode(userAddressDto.getDistrictCode());
-            }
-
-            if (userAddressDto.getWardCode() != null &&
-                    !userAddressDto.getWardCode().equals(userAddress.getWardCode())) {
-                userAddress.setWardCode(userAddressDto.getWardCode());
-            }
-
-            if (userAddressDto.getFullAddress() != null &&
-                    !userAddressDto.getFullAddress().equals(userAddress.getFullAddress())) {
-                userAddress.setFullAddress(userAddressDto.getFullAddress());
-            }
-
-            if (userAddressDto.getAddressType() != null &&
-                    !userAddressDto.getAddressType().equals(userAddress.getAddressType())) {
-                userAddress.setAddressType(userAddressDto.getAddressType());
-            }
-
-            if (userAddressDto.getPhoneNumber() != null &&
-                    !userAddressDto.getPhoneNumber().equals(userAddress.getPhoneNumber())) {
-                userAddress.setPhoneNumber(userAddressDto.getPhoneNumber());
-            }
-
-            if (userAddressDto.getReceiverName() != null &&
-                    !userAddressDto.getReceiverName().equals(userAddress.getReceiverName())) {
-                userAddress.setReceiverName(userAddressDto.getReceiverName());
-            }
-        }
-        if (userAddress == null) {
+        UserAddress userAddress = null;
+        if (userAddressDto.getId() == null) {
             userAddress = toEntity(userAddressDto, userId);
+        } else if (userAddress.getId() != null && userAddress.getId() > 0) {
+            userAddress = userAddressRepository.getUserAddressById(userAddress.getId());
+            if (userAddress != null) {
+                if (userAddressDto.getProvinceCode() != null &&
+                        !userAddressDto.getProvinceCode().equals(userAddress.getProvinceCode())) {
+                    userAddress.setProvinceCode(userAddressDto.getProvinceCode());
+                }
+
+                if (userAddressDto.getDistrictCode() != null &&
+                        !userAddressDto.getDistrictCode().equals(userAddress.getDistrictCode())) {
+                    userAddress.setDistrictCode(userAddressDto.getDistrictCode());
+                }
+
+                if (userAddressDto.getWardCode() != null &&
+                        !userAddressDto.getWardCode().equals(userAddress.getWardCode())) {
+                    userAddress.setWardCode(userAddressDto.getWardCode());
+                }
+
+                if (userAddressDto.getFullAddress() != null &&
+                        !userAddressDto.getFullAddress().equals(userAddress.getFullAddress())) {
+                    userAddress.setFullAddress(userAddressDto.getFullAddress());
+                }
+
+                if (userAddressDto.getAddressType() != null &&
+                        !userAddressDto.getAddressType().equals(userAddress.getAddressType())) {
+                    userAddress.setAddressType(userAddressDto.getAddressType());
+                }
+
+                if (userAddressDto.getPhoneNumber() != null &&
+                        !userAddressDto.getPhoneNumber().equals(userAddress.getPhoneNumber())) {
+                    userAddress.setPhoneNumber(userAddressDto.getPhoneNumber());
+                }
+
+                if (userAddressDto.getReceiverName() != null &&
+                        !userAddressDto.getReceiverName().equals(userAddress.getReceiverName())) {
+                    userAddress.setReceiverName(userAddressDto.getReceiverName());
+                }
+            }
         }
 
-
-        userAddressRepository.save(userAddress);
+        if (userAddress != null) userAddressRepository.save(userAddress);
+        else return new Response<String>().withDataAndStatus("Cập nhật địa chỉ thất bại!", HttpStatus.BAD_REQUEST);
 
         return new Response<String>().withDataAndStatus("Cập nhật địa chỉ thành công!", HttpStatus.OK);
     }
