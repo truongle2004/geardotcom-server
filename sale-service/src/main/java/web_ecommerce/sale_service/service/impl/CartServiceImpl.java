@@ -83,7 +83,7 @@ public class CartServiceImpl implements CartService {
             }
             cartItemRepository.save(new CartItem(newItem.getProductId(), cartId, newItem.getQuantity()));
         }
-        return new Response<String>().withDataAndStatus("Add item to cart successfully", HttpStatus.OK);
+        return new Response<String>().withDataAndStatus("Đã thêm sản phẩm vào giỏ hàng", HttpStatus.OK);
     }
 
     @Override

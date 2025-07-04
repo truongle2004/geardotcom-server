@@ -2,6 +2,7 @@ package web_ecommerce.user_service.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,11 +51,11 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(value = V1 + root + "/address")
-    public Response<?> getAddress(HttpServletRequest request) {
+    public Response<?> getAddress(HttpServletRequest request, Pageable pageable) {
         String userId = getUserId(request);
-        if (StringUtils.isNotNullOrEmpty(userId)) {
-            return new Response<String>().withDataAndStatus(ResponseMessage.USER_PERMISSION_DENIED.getMessage(), HttpStatus.FORBIDDEN);
-        }
-        return userService.getAddressInfo(userId);
+//        if (StringUtils.isNotNullOrEmpty(userId)) {
+//            return new Response<String>().withDataAndStatus(ResponseMessage.USER_PERMISSION_DENIED.getMessage(), HttpStatus.FORBIDDEN);
+//        }
+        return userService.getAddressInfo(userId, pageable);
     }
 }
