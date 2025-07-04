@@ -20,7 +20,7 @@ import web_ecommerce.sale_service.service.CartService;
 public class CartController extends BaseController {
     private final String root = "/sale/carts";
 
-    private CartService cartService;
+    private final CartService cartService;
 
     public CartController(CartService cartService) {
         this.cartService = cartService;
