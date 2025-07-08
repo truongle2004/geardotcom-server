@@ -24,6 +24,8 @@ public enum ResponseMessage {
 
     // Failed
     UPDATE_USER_INFO_FAILED("Cập nhật thông tin người dùng không thành công!"),
+    VNPAY_SIGNING_FAILED("VNPAY_SIGNING_FAILED"),
+    VNPAY_CHECKSUM_FAILED("VNPAY_CHECKSUM_FAILED"),
     ;
 
 

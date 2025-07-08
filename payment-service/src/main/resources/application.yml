@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/geardotcom
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+payment:
+  vnp_TmnCode: ${VNP_TMNCODE}
+  vnp_PayUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  vnp_secretKey: ${VNP_SECRETKEY}
+  vnp_ApiUrl: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+
+server:
+  port: 8082
