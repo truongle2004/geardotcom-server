@@ -18,5 +18,5 @@ public interface CartService {
 
     Response<?> addItemToCart(String userId, CartItemDTO newItem);
 
-    void removeItemFromCart(String cartId);
+    void removeItemFromCart(List<String> ids);
 }

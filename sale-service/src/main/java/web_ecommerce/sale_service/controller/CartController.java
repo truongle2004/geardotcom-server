@@ -16,6 +16,8 @@ import web_ecommerce.core.utils.StringUtils;
 import web_ecommerce.sale_service.dto.CartItemDTO;
 import web_ecommerce.sale_service.service.CartService;
 
+import java.util.List;
+
 @RestController
 public class CartController extends BaseController {
     private final String root = "/sale/carts";
@@ -48,13 +50,13 @@ public class CartController extends BaseController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")}
     )
-    @DeleteMapping(value = V1 + root + "/{id}")
-    public Response<String> removeProductFromCart(HttpServletRequest httpServletRequest, @PathVariable String id) {
+    @DeleteMapping(value = V1 + root)
+    public Response<String> removeProductFromCart(HttpServletRequest httpServletRequest, @RequestParam List<String> ids) {
         String userId = getUserId(httpServletRequest);
         if (StringUtils.isNotNullOrEmpty(userId))
-            return new Response<String>().withDataAndStatus(ResponseMessage.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-        cartService.removeItemFromCart(id);
-        return new Response<String>().withDataAndStatus("Remove product from cart successfully", HttpStatus.OK);
+            return new Response<String>().withDataAndStatus(ResponseMessage.USER_NOT_FOUND.getMessage(), HttpStatus.FORBIDDEN);
+        cartService.removeItemFromCart(ids);
+        return new Response<String>().withDataAndStatus("Xóa sản phẩm thành công!", HttpStatus.OK);
     }
 
 

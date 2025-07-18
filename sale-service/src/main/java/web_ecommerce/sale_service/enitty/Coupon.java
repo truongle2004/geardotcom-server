@@ -65,4 +65,7 @@ public class Coupon extends BaseEntityNonId {
 
     @Column(name = "is_active")
     private Boolean isActive = true;
+
+    @Column(name = "required_order_total", precision = 10, scale = 2)
+    private BigDecimal requiredOrderTotal = BigDecimal.ZERO;
 }

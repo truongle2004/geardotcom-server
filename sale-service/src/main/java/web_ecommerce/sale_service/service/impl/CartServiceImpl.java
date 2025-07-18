@@ -18,7 +18,6 @@ import web_ecommerce.sale_service.service.CartService;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -87,7 +86,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeItemFromCart(String cartItemId) {
-        cartItemRepository.deleteById(cartItemId);
+    public void removeItemFromCart(List<String> ids) {
+        cartItemRepository.deleteAllById(ids);
     }
 }

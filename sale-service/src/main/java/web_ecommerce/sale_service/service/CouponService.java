@@ -26,7 +26,7 @@ public interface CouponService {
 
     void deactivateCoupon(String id);
 
-    CouponValidationResultDto validateCoupon(ValidateCouponDto validateCouponDto);
+    CouponValidationResultDto validateCoupon(ValidateCouponDto validateCouponDto, String userId);
 
     void useCoupon(String couponId, String userId, String orderId);
 

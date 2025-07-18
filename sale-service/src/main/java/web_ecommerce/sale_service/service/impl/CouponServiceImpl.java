@@ -101,7 +101,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public CouponValidationResultDto validateCoupon(ValidateCouponDto validateCouponDto) {
+    public CouponValidationResultDto validateCoupon(ValidateCouponDto validateCouponDto, String userId) {
         Optional<Coupon> couponOpt = couponRepository.findByCode(validateCouponDto.getCode());
 
         if (couponOpt.isEmpty()) {
@@ -140,7 +140,7 @@ public class CouponServiceImpl implements CouponService {
 
         // Check user usage limit
         Integer userUsageCount = couponUsageRepository.countByCouponIdAndUserId(
-                coupon.getId(), validateCouponDto.getUserId());
+                coupon.getId(), userId);
 
         if (coupon.getUserLimit() != null && userUsageCount >= coupon.getUserLimit()) {
             return CouponValidationResultDto.invalid("You have reached the usage limit for this coupon");

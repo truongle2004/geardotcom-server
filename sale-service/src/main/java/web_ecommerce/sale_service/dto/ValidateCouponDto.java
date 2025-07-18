@@ -11,6 +11,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ValidateCouponDto {
     private String code;
-    private String userId;
     private BigDecimal orderAmount;
 }
