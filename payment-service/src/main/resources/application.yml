@@ -20,10 +20,11 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 payment:
-  vnp_TmnCode: ${VNP_TMNCODE}
-  vnp_PayUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  vnp_secretKey: ${VNP_SECRETKEY}
-  vnp_ApiUrl: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+    vnp_TmnCode: ${VNP_TMN_CODE}
+    vnp_PayUrl: ${VNP_PAY_URL}
+    vnp_SecretKey: ${VNP_SECRET_KEY}
+    vnp_ApiUrl: ${VNP_API_URL}
+    vnp_ReturnUrl: ${VNP_RETURN_URL}
 
 server:
   port: 8082

@@ -19,4 +19,10 @@ public class Response<D> extends BaseResponse<D> {
         }
         return this;
     }
+
+
+    public Response<D> withData(D data) {
+        this.setData(data);
+        return this;
+    }
 }
