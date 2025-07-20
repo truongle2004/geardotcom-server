@@ -45,21 +45,13 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("select new web_ecommerce.sale_service.dto.CategoryDTO(pc.id, pc.name, pc.handle, pc.description) from ProductCategory pc")
     List<CategoryDTO> getAllProductCategory();
 
-    @Query("select new web_ecommerce.sale_service.dto.ProductDTO(p.id, p.handle," +
-            "p.title, p.warehouseId, p.productVendorId," +
-            "p.productCategoryId, p.publishedScope, p.purchaseCount," +
-            "p.averageRating, p.reviewCount, p.tags, p.soleQuantity," +
-            "p.notAllowPromotion, p.available, concat(:file_upload_url,'/', pi.src), pi.alt, p.price) " +
-            "from Product p " +
-            "join ProductImage pi on p.id = pi.productId " +
-            "where p.id in :ids and pi.position = :position")
-    List<ProductDTO> getProductsByIds(@Param("ids") List<String> ids,
-                                      @Param("position") int position,
-                                      @Param("file_upload_url") String url);
-
-
     @Query("select new web_ecommerce.sale_service.dto.VendorDTO(pv.id, pv.name, pv.handle, pv.description) " +
             "from ProductVendor pv")
     List<VendorDTO> getAll();
 
+    @Query("SELECT COALESCE(SUM(p.price), 0) FROM Product p WHERE p.id IN :ids")
+    BigDecimal getTotalPrice(List<String> ids);
+
+//    @Query("SELECT p.price FROM Product p WHERE p.id IN :ids")
+//    List<Long> getProductPriceByIds(@Param("ids") List<String> ids);
 }

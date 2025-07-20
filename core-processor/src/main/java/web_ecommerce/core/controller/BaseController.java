@@ -11,6 +11,7 @@ public abstract class BaseController {
     public static final String V2 = Constants.V2;
     private static final String SLASH = "/";
     public static final String API = SLASH + Constants.API + SLASH;
+    public static final String API_V1 = API + V1;
 
     public String getUserId(HttpServletRequest httpRequest) {
         String userId = httpRequest.getHeader("X-User-Id");
