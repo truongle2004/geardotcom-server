@@ -21,6 +21,10 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/user/**
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/v1/payment/**
         - id: py-service
           uri: lb://py-service
           predicates:

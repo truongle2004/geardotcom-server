@@ -11,12 +11,14 @@ import web_ecommerce.core.db.BaseEntityNonId;
 @NoArgsConstructor
 @AllArgsConstructor
 public class District extends BaseEntityNonId {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
     private Integer code;
+
     private String name;
     private String codename;
     private String divisionType;
