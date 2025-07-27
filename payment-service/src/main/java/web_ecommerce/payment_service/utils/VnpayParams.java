@@ -17,4 +17,7 @@ public class VnpayParams {
     public static final String vnp_OrderType = "vnp_OrderType";
     public static final String vnp_Locale = "vnp_Locale";
     public static final String vnp_SecureHash = "vnp_SecureHash";
+    public static final String vnp_ResponseCode = "vnp_ResponseCode";
+    public static final String vnp_CardType = "vnp_CardType";
+    public static final String vnp_TransactionStatus = "vnp_TransactionStatus";
 }

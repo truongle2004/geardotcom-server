@@ -27,7 +27,17 @@ public enum ResponseMessage {
     VNPAY_SIGNING_FAILED("VNPAY_SIGNING_FAILED"),
     VNPAY_CHECKSUM_FAILED("VNPAY_CHECKSUM_FAILED"),
 
-    CREATE_ORDER_FAILED("Tạo hóa đơn thanh thanh toán không thành công!")
+    CREATE_ORDER_FAILED("Tạo hóa đơn thanh thanh toán không thành công!"),
+
+    PAYMENT_FAILED("Thanh toán không thành công, vui lòng thử lại sau"),
+    PAYMENT_TIMEOUT("Quá thời gian thanh toán, giao dịch đã bị hủy"),
+    PAYMENT_CANCELED("Giao dịch đã bị hủy bởi người dùng"),
+    PAYMENT_INSUFFICIENT_BALANCE("Số dư trong tài khoản không đủ để thực hiện thanh toán"),
+    PAYMENT_LIMIT_EXCEEDED("Bạn đã vượt quá hạn mức giao dịch trong ngày"),
+    PAYMENT_BANK_MAINTENANCE("Ngân hàng đang bảo trì, vui lòng chọn phương thức khác"),
+    PAYMENT_INVALID_CARD("Thông tin thẻ không hợp lệ hoặc đã hết hạn"),
+    PAYMENT_OTP_FAILED("Xác thực OTP thất bại, vui lòng thử lại"),
+    PAYMENT_UNKNOWN_ERROR("Đã xảy ra lỗi không xác định trong quá trình thanh toán"),
     ;
 
 

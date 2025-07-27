@@ -9,5 +9,6 @@ import java.util.Map;
 
 public interface PaymentService {
     PaymentResponseDto createPayment(CreatePaymentRequest request);
-    Response<PaymentDto> returnPayment(Map<String, String> allParams);
+    Response<PaymentDto> returnPayment(String paymentId);
+    Response<?> paymentSuccessHandle(Map<String, String> allParams);
 }

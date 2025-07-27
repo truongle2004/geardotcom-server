@@ -22,8 +22,13 @@ public class PaymentController extends BaseController {
         return paymentService.createPayment(request);
     }
 
-    @GetMapping(V1 + root + "/vnpay_return")
-    public Response<PaymentDto> vnpayReturn(@RequestParam Map<String, String> allParams) {
-        return paymentService.returnPayment(allParams);
+    @GetMapping(V1 + root + "/vnpay_return/{id}")
+    public Response<PaymentDto> vnpayReturn(@PathVariable String id) {
+        return paymentService.returnPayment(id);
+    }
+
+    @GetMapping(V1 + root + "/handle_success")
+    public Response<?> handle(@RequestParam Map<String, String> allParams) {
+        return paymentService.paymentSuccessHandle(allParams);
     }
 }
